@@ -1,0 +1,224 @@
+/* Base and Glassmorphism */
+body {
+    background-color: #0f172a;
+    background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 70%);
+}
+
+.glass-nav {
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.glass-card {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Form Elements */
+.glass-input, .input-field {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white !important;
+    outline: none;
+    transition: 0.3s;
+    appearance: none;
+}
+
+.glass-input option, .input-field option {
+    background-color: #0f172a;
+    color: white;
+}
+
+.glass-input:focus, .input-field:focus {
+    border-color: #00f3ff;
+    box-shadow: 0 0 10px rgba(0,243,255,0.3);
+}
+
+/* Pass Card specific glowing effects */
+.pass-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    overflow: hidden;
+}
+
+.pass-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #00f3ff, #bc13fe, #ff007f, #00f3ff);
+    background-size: 200% auto;
+    animation: gradientShift 3s linear infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(90deg, #00f3ff, #bc13fe);
+    color: #0f172a;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    transform: scale(1.04);
+    box-shadow: 0 0 20px cyan;
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #bc13fe;
+    box-shadow: 0 0 20px rgba(188, 19, 254, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pulseSlow {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50% { opacity: 0.25; transform: scale(1.05); }
+}
+
+.animate-pulse-slow {
+    animation: pulseSlow 4s ease-in-out infinite;
+}
+
+.object-delay {
+    animation-delay: 2s;
+}
+
+/* Hide scrollbar for clean look */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #0f172a; 
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15); 
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 243, 255, 0.5); 
+}
+
+/* QR Code Wrapper Styling to make it fit well */
+#qrcode img {
+    margin: 0 auto;
+    border-radius: 8px;
+    padding: 8px;
+    background: white;
+}
+
+/* ==== SEAT MAP STYLES ==== */
+.section {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    margin: 4px 0;
+}
+
+.seat-grid {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.seat {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Hover price */
+.seat::after {
+  content: "₹40";
+  position: absolute;
+  top: -22px;
+  font-size: 8px;
+  opacity: 0;
+  transition: 0.2s;
+}
+
+.seat:hover::after {
+  opacity: 1;
+}
+
+/* Glow */
+.seat-available {
+  background: #1a1a1a;
+  border: 1px solid #00f1fe;
+}
+
+.seat-available:hover {
+  box-shadow: 0 0 15px #00f1fe;
+  transform: scale(1.1);
+}
+
+.seat-selected {
+  background: #facc15;
+  color: black;
+  box-shadow: 0 0 20px #facc15;
+}
+
+.seat-sold {
+  background: #ff716c;
+  cursor: not-allowed;
+}
+
+.seat-locked {
+  background: #444;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Hide scrollbar for clean UI */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}

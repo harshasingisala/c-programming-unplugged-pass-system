@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Event Pass</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0e0e0e;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: screen;
+            margin: 0;
+            padding: 20px;
+        }
+        .pass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(0, 241, 254, 0.1);
+        }
+        h1 { color: #99f7ff; margin-bottom: 0.5rem; }
+        p { color: #adaaaa; font-size: 1.1rem; }
+        .pin { font-size: 3rem; font-weight: bold; color: #ff716c; letter-spacing: 0.2em; margin: 1rem 0; }
+    </style>
+</head>
+<body>
+    <div class="pass-card">
+        <h1>Your Event Pass</h1>
+        <p>Keep this PIN safe for entry</p>
+        <div id="pin-display" class="pin">----</div>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        const pass = JSON.parse(localStorage.getItem("feedx_pass"));
+
+        if (pass) {
+            document.getElementById("pin-display").innerText = pass.seat; // User requested seat to be displayed in the big pin area
+            document.getElementById("message").innerHTML = `
+                <div style="margin-top: 1rem; color: #99f7ff;">
+                    <strong>Name:</strong> ${pass.name}<br>
+                    <strong>Issued At:</strong> ${pass.time}
+                </div>
+            `;
+        } else {
+            document.getElementById("message").innerText = "No Pass Found ❌";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<script type="module">
+    import { auth, signInWithEmailAndPassword } from "./firebase.js";
+
+    window.login = async function () {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        try {
+            const user = await signInWithEmailAndPassword(auth, email, password);
+
+            // Only allow YOU as admin
+            if (email !== "harshasingisala@gmail.com") {
+                alert("Not authorized");
+                return;
+            }
+
+            window.location.href = "admin-dashboard.html";
+
+        } catch (err) {
+            document.getElementById("error").classList.remove("hidden");
+        }
+    };
+</script>

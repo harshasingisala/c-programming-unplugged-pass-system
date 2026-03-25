@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEEDX Event Pass</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary": "#ac89ff",
+                        "on-error-container": "#ffa8a3",
+                        "surface-bright": "#2c2c2c",
+                        "error-dim": "#d7383b",
+                        "on-secondary-fixed": "#41009a",
+                        "on-secondary-container": "#f8f1ff",
+                        "error": "#ff716c",
+                        "inverse-surface": "#fcf8f8",
+                        "on-tertiary": "#436600",
+                        "error-container": "#9f0519",
+                        "on-primary-fixed": "#004145",
+                        "surface": "#0e0e0e",
+                        "secondary-fixed": "#dac9ff",
+                        "on-surface": "#ffffff",
+                        "tertiary-dim": "#a0ed00",
+                        "inverse-primary": "#006a70",
+                        "outline": "#777575",
+                        "primary": "#99f7ff",
+                        "on-surface-variant": "#adaaaa",
+                        "secondary-dim": "#874cff",
+                        "primary-dim": "#00e2ee",
+                        "secondary-container": "#7000ff",
+                        "tertiary-fixed": "#abfc00",
+                        "on-background": "#ffffff",
+                        "on-primary-fixed-variant": "#006065",
+                        "on-primary": "#005f64",
+                        "on-primary-container": "#00555a",
+                        "on-secondary": "#290067",
+                        "surface-container-low": "#131313",
+                        "surface-container-high": "#201f1f",
+                        "on-tertiary-container": "#3c5c00",
+                        "surface-container": "#1a1919",
+                        "secondary-fixed-dim": "#ceb9ff",
+                        "on-secondary-fixed-variant": "#6300e2",
+                        "primary-container": "#00f1fe",
+                        "background": "#0e0e0e",
+                        "on-tertiary-fixed-variant": "#446700",
+                        "on-error": "#490006",
+                        "outline-variant": "#494847",
+                        "surface-dim": "#0e0e0e",
+                        "tertiary-fixed-dim": "#a0ed00",
+                        "surface-variant": "#262626",
+                        "primary-fixed-dim": "#00e2ee",
+                        "tertiary": "#deffab",
+                        "on-tertiary-fixed": "#2e4800",
+                        "tertiary-container": "#abfc00",
+                        "inverse-on-surface": "#565554",
+                        "surface-container-lowest": "#000000",
+                        "primary-fixed": "#00f1fe",
+                        "surface-tint": "#99f7ff",
+                        "surface-container-highest": "#262626"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Outfit:wght@600&display=swap" rel="stylesheet"/>
+    
+    <!-- Material & FA Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- QR + PDF + Email + Scanner + Razorpay -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+    <!-- Real-time Sockets -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        emailjs.init("lRZiR_b9CdRtPU7EN"); // replace this key manually
+    </script>
+</head>
+
+<body class="bg-surface text-on-surface font-body min-h-screen flex flex-col relative overflow-x-hidden">
+
+    <!-- Ambient Neon Background Blobs -->
+    <div class="fixed top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-primary/10 blur-[120px] pointer-events-none -z-10"></div>
+    <div class="fixed bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-secondary-container/10 blur-[150px] pointer-events-none -z-10"></div>
+
+    <!-- NAVBAR -->
+    <nav class="fixed top-0 w-full bg-black/40 backdrop-blur border-b border-white/10 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center cursor-pointer hover:opacity-80 transition" onclick="navigateTo('home')">
+                <img src="assets/logo.jpg" alt="Logo" class="h-10 w-10 overflow-hidden rounded-full mr-3 border border-white/20">
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                    FEEDX
+                </h1>
+            </div>
+
+            <div class="space-x-4">
+                <button onclick="navigateTo('home')" class="hover:text-cyan-400">Home</button>
+                <button onclick="navigateTo('contact')" class="hover:text-blue-400">Contact</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main class="pt-24 px-4 max-w-6xl mx-auto">
+        <div id="app-container"></div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="text-center text-gray-500 py-6 border-t border-white/10 mt-10">
+        © 2026 FEEDX Event System
+    </footer>
+
+    <!-- BACKGROUND GLOW (from older iter) -->
+    <div class="fixed inset-0 -z-10 hidden">
+        <div class="absolute top-20 left-20 w-72 h-72 bg-purple-500 blur-[120px] opacity-20"></div>
+        <div class="absolute bottom-20 right-20 w-72 h-72 bg-cyan-400 blur-[120px] opacity-20"></div>
+    </div>
+
+    <!-- APP SCRIPT -->
+    <script src="app.js?v=4"></script>
+
+</body>
+
+</html>

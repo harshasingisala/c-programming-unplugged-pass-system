@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Login</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-slate-900 flex items-center justify-center h-screen text-white">
+
+    <!-- FLOATING LOGO -->
+    <div class="fixed top-6 left-6 flex items-center gap-3">
+        <!-- LOGO -->
+        <img src="assets/logo.jpg" alt="Logo" class="h-12 w-12 rounded-full border border-white/20 shadow-[0_0_15px_rgba(0,243,255,0.3)]">
+        <h2 class="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">FEEDX</h2>
+    </div>
+
+<div class="glass-card p-8 w-[350px] text-center">
+    <h2 class="text-2xl mb-6 font-bold">Admin Login</h2>
+
+    <input id="email" placeholder="Email" class="glass-input w-full p-3 mb-4">
+    <input id="password" type="password" placeholder="Password" class="glass-input w-full p-3 mb-4">
+
+    <button onclick="login()" class="btn-primary w-full p-3 rounded-lg">Login</button>
+
+    <p id="error" class="text-red-400 mt-3 hidden">Invalid Credentials</p>
+</div>
+
+<script src="admin.js"></script>
+
+</body>
+</html>

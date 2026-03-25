@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+    emailjs.init("lRZiR_b9CdRtPU7EN"); // replace this
+})();
+</script>
+</head>
+
+<body class="bg-slate-900 text-white p-6">
+
+<div class="max-w-7xl mx-auto">
+
+    <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center">
+            <img src="assets/logo.jpg" alt="Logo" class="h-12 w-12 rounded-full mr-4 border border-white/20 shadow-[0_0_15px_rgba(0,243,255,0.3)]">
+            <h1 class="text-3xl font-bold">Admin Dashboard</h1>
+        </div>
+        <button onclick="logout()" class="text-red-400 font-semibold hover:text-red-300 transition">Logout</button>
+    </div>
+
+    <!-- 📊 TOP LEVEL METRICS -->
+    <div class="grid grid-cols-3 gap-6 mb-8">
+        <div class="bg-slate-800 p-6 rounded-xl border border-white/10 text-center shadow">
+            <h3 class="text-gray-400 uppercase tracking-widest text-sm mb-2">Total Seats</h3>
+            <p class="font-headline text-4xl font-bold text-white">0</p>
+        </div>
+        <div class="bg-slate-800 p-6 rounded-xl border border-white/10 text-center shadow">
+            <h3 class="text-gray-400 uppercase tracking-widest text-sm mb-2">Sold Seats</h3>
+            <p class="font-headline text-4xl font-bold text-red-500">0</p>
+        </div>
+        <div class="bg-slate-800 p-6 rounded-xl border border-white/10 text-center shadow">
+            <h3 class="text-gray-400 uppercase tracking-widest text-sm mb-2">Revenue</h3>
+            <p class="font-headline text-4xl font-bold text-green-400">₹0</p>
+        </div>
+        <!-- Hidden 0th item so targetting index [1], [2], [3] works -->
+        <span class="font-headline hidden"></span>
+    </div>
+
+    <!-- 🔥 MINI MAP -->
+    <div class="bg-slate-800 p-6 mb-8 rounded-xl border border-white/10 text-center shadow">
+        <h2 class="text-xl font-bold text-white mb-4">Live Occupancy Map</h2>
+        <div id="mini-map" class="flex flex-wrap justify-center gap-1 mx-auto max-w-4xl"></div>
+    </div>
+
+    <div class="flex gap-4 mb-4">
+        <input id="search" placeholder="Search" class="glass-input p-3 w-full">
+        <select id="filter" class="glass-input p-3">
+            <option value="all">All</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+        </select>
+        <button onclick="exportData()" class="bg-blue-600 px-4 rounded">Export</button>
+    </div>
+
+    <table class="w-full">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>PIN</th>
+                <th>Txn</th>
+                <th>Status</th>
+                <th>Approve</th>
+                <th>Entry</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+
+</div>
+
+<script src="admin-dashboard.js"></script>
+
+<!-- 🔥 SOCKET IO AND REALTIME SCRIPT -->
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+const socket = io("http://localhost:5000");
+
+// 🔥 FETCH DATA
+async function loadDashboard() {
+    const res = await fetch("http://localhost:5000/get-dashboard");
+    const data = await res.json();
+
+    updateStats(data);
+}
+
+// 🔥 UPDATE STATS
+function updateStats(data) {
+    document.querySelectorAll(".font-headline")[1].innerText = data.totalSeats;
+    document.querySelectorAll(".font-headline")[2].innerText = data.soldSeats;
+    document.querySelectorAll(".font-headline")[3].innerText = "₹" + data.revenue;
+}
+
+// 🔥 UPGRADE OCCUPANCY MAP (REAL DATA)
+async function loadMap() {
+    const res = await fetch("http://localhost:5000/get-seats");
+    const seats = await res.json();
+
+    const container = document.getElementById("mini-map");
+    container.innerHTML = "";
+
+    seats.forEach(seat => {
+        let color = "bg-green-500";
+
+        if (seat.status === "sold") color = "bg-red-500";
+        else if (seat.status === "locked") color = "bg-gray-500";
+        else if (seat.status === "available") color = "bg-green-500";
+
+        container.innerHTML += `<div class="w-4 h-4 rounded-sm ${color}"></div>`;
+    });
+}
+
+// 🔥 LIVE UPDATE
+socket.on("seatSold", () => {
+    loadDashboard();
+    loadMap();
+});
+
+socket.on("seatLocked", () => {
+    loadDashboard();
+    loadMap();
+});
+
+socket.on("seatUnlocked", () => {
+    loadDashboard();
+    loadMap();
+});
+
+loadDashboard();
+loadMap();
+</script>
+
+</body>
+</html>

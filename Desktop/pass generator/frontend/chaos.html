@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEEDX 2026 - CHAOS MODE GATEWAY</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Outfit:wght@600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+          margin: 0;
+          overflow-x: hidden;
+          background: #0e0e0e;
+        }
+
+        .hero-section {
+          height: 100vh;
+          overflow: hidden;
+          perspective: 1000px;
+          position: relative;
+        }
+
+        .hero-3d {
+          transform-style: preserve-3d;
+          transition: transform 0.2s ease-out;
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          inset: 0;
+        }
+
+        .bg-layer {
+          position: absolute;
+          inset: 0;
+          background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop') center/cover no-repeat;
+          transform: scale(1.3);
+          filter: brightness(0.6);
+          z-index: 1;
+        }
+
+        .content {
+          position: relative;
+          z-index: 2;
+          text-align: center;
+          top: 40%;
+        }
+
+        .display-lg {
+          font-size: 6rem;
+          background: linear-gradient(90deg, #99f7ff, #7000ff);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          text-shadow: 0 0 30px rgba(153,247,255,0.3);
+          font-family: 'Outfit', sans-serif;
+          font-weight: 700;
+          margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .display-lg { font-size: 4rem; }
+        }
+
+        .subtitle {
+          opacity: 0.6;
+          letter-spacing: 4px;
+          margin-top: 10px;
+          color: white;
+          font-family: 'Outfit', sans-serif;
+        }
+
+        .phase {
+          letter-spacing: 2px;
+          opacity: 0.7;
+          margin-bottom: 5px;
+          color: white;
+          font-family: 'Outfit', sans-serif;
+        }
+
+        .particle {
+          position: fixed;
+          width: 2px;
+          height: 2px;
+          background: #99f7ff;
+          opacity: 0.4;
+          pointer-events: none;
+          z-index: 999;
+        }
+
+        .magnetic {
+          transition: transform 0.2s ease;
+        }
+
+        .glow-cursor {
+          position: fixed;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: rgba(153,247,255,0.2);
+          filter: blur(20px);
+          pointer-events: none;
+          z-index: 9999;
+          transform: translate(-50%, -50%); /* Centers cursor on pointer */
+        }
+
+        .panel {
+          height: 100vh;
+          position: relative;
+        }
+
+        .next {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .next-text {
+          font-size: 4rem;
+          opacity: 0;
+          transform: translateY(100px);
+          font-weight: bold;
+          background: linear-gradient(90deg, #ff007f, #00f3ff);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          text-align: center;
+          margin-bottom: 2rem;
+          font-family: 'Outfit', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .next-text { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+
+<body class="text-white font-sans">
+    
+    <section class="hero-section">
+      <div class="hero-3d">
+        <div class="bg-layer"></div>
+        <div class="content">
+          <p class="phase">PHASE ONE ACTIVATION</p>
+          <h1 class="display-lg title">FEEDX 2026</h1>
+          <p class="subtitle">POWERING A NEW ERA</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel next bg-black relative">
+      <div class="absolute inset-0 bg-gradient-to-b from-purple-900/10 to-transparent pointer-events-none"></div>
+      
+      <h2 class="next-text">THIS IS NOT AN EVENT</h2>
+      
+      <div class="opacity-0 translate-y-20 flex flex-col items-center" id="nextAction">
+          <p class="text-gray-400 mb-6 font-outfit tracking-widest text-sm uppercase">Access Granted. Verification Complete.</p>
+          <button onclick="window.location.href='index.html?view=pass'" class="px-8 py-4 bg-white/5 hover:bg-white/10 backdrop-blur border border-white/20 rounded-full font-bold tracking-widest uppercase transition-all hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+              View Your Pass
+          </button>
+      </div>
+    </section>
+
+<!-- Smooth Scroll Engine -->
+<script src="https://unpkg.com/lenis@1.0.5/dist/lenis.min.js"></script>
+<!-- GSAP Core & ScrollTrigger -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<script>
+// ======================
+// 🛡️ SECURITY GATE
+// ======================
+if (!localStorage.getItem("paid")) {
+    alert("UNAUTHORIZED ACCESS DETECTED ❌");
+    window.location.href = "index.html";
+}
+
+// ======================
+// 🛸 SMOOTH SCROLL (LENIS)
+// ======================
+const lenis = new Lenis({
+    lerp: 0.1,
+    smoothWheel: true
+});
+
+lenis.on('scroll', ScrollTrigger.update);
+
+gsap.ticker.add((time) => {
+  lenis.raf(time * 1000);
+});
+
+gsap.ticker.lagSmoothing(0);
+
+// ======================
+// 🎬 GSAP INIT
+// ======================
+gsap.registerPlugin(ScrollTrigger);
+
+// 🔥 TEXT SPLIT INITIAL ANIMATION (INSANE)
+gsap.from(".display-lg", {
+  opacity: 0,
+  y: 100,
+  duration: 1.5,
+  ease: "power4.out"
+});
+
+// ======================
+// 🎬 HERO CINEMATIC SCROLL
+// ======================
+gsap.timeline({
+  scrollTrigger: {
+    trigger: ".hero-section",
+    start: "top top",
+    end: "+=100%",
+    scrub: true,
+    pin: true
+  }
+})
+.to(".display-lg", {
+  scale: 0.7,
+  y: -100,
+  opacity: 0.1
+})
+.to(".hero-section", {
+  backgroundColor: "#000",
+}, 0);
+
+// 🔥 PARALLAX DEPTH (3D EFFECT bg-layer scroll)
+gsap.to(".bg-layer", {
+  y: 100,
+  scrollTrigger: {
+    trigger: ".hero-section",
+    scrub: true
+  }
+});
+
+// ======================
+// 🧠 3D MOUSE PARALLAX
+// ======================
+const hero = document.querySelector(".hero-3d");
+document.addEventListener("mousemove", (e) => {
+  let x = (window.innerWidth / 2 - e.clientX) / 25;
+  let y = (window.innerHeight / 2 - e.clientY) / 25;
+  hero.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+});
+
+// ======================
+// ✨ PARTICLE SYSTEM
+// ======================
+for (let i = 0; i < 80; i++) {
+  let p = document.createElement("div");
+  p.classList.add("particle");
+  p.style.left = Math.random() * window.innerWidth + "px";
+  p.style.top = Math.random() * window.innerHeight + "px";
+  document.body.appendChild(p);
+
+  gsap.to(p, {
+    y: "+=" + Math.random() * 200,
+    x: "+=" + Math.random() * 100,
+    duration: 5 + Math.random() * 5,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut"
+  });
+}
+
+// ======================
+// 🧲 MAGNETIC BUTTONS
+// ======================
+document.querySelectorAll("button").forEach(btn => {
+  btn.classList.add("magnetic");
+  
+  btn.addEventListener("mousemove", e => {
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width/2;
+    const y = e.clientY - rect.top - rect.height/2;
+    btn.style.transform = `translate(${x*0.2}px, ${y*0.2}px)`;
+  });
+
+  btn.addEventListener("mouseleave", () => {
+    btn.style.transform = "translate(0,0)";
+  });
+});
+
+// ======================
+// 🌌 GLOW CURSOR
+// ======================
+const cursor = document.createElement("div");
+cursor.classList.add("glow-cursor");
+document.body.appendChild(cursor);
+
+document.addEventListener("mousemove", e => {
+  cursor.style.left = e.clientX + "px";
+  cursor.style.top = e.clientY + "px";
+});
+
+// ======================
+// 🚀 NEXT SECTION REVEAL
+// ======================
+gsap.to(".next-text", {
+  scrollTrigger: {
+    trigger: ".next",
+    start: "top 80%",
+    toggleActions: "play none none reverse"
+  },
+  opacity: 1,
+  y: 0,
+  duration: 1.5,
+  ease: "power3.out"
+});
+
+gsap.to("#nextAction", {
+  scrollTrigger: {
+    trigger: ".next",
+    start: "top 70%",
+    toggleActions: "play none none reverse"
+  },
+  opacity: 1,
+  y: 0,
+  duration: 1.5,
+  delay: 0.5,
+  ease: "power3.out"
+});
+
+</script>
+
+</body>
+</html>
